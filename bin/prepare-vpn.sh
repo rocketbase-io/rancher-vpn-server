@@ -36,8 +36,7 @@ server 10.8.0.0 255.255.255.0
 duplicate-cn
 
 push "route ${ROUTED_NETWORK_CIDR} ${ROUTED_NETWORK_MASK}"
-push "route 169.254.169.250 255.255.255.255"
-push "dhcp-option DNS 169.254.169.250" 
+push "dhcp-option DNS 10.8.0.1" 
 EOF
 
 # Enable tcp forwarding and add iptables MASQUERADE rule
