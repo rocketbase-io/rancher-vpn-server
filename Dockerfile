@@ -4,7 +4,7 @@ MAINTAINER Manel Martinez <manel@nixelsolutions.com>
 MAINTAINER Niels Schelbach <niels.schelbach@rocketbase.io>
 
 RUN apt-get update && \
-    apt-get install -y openvpn iptables dnsmasq supervisor && \
+    apt-get install -y openvpn iptables dnsmasq supervisor iputils-ping && \
     rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /var/log/supervisor
@@ -16,7 +16,7 @@ ENV DEBUG 0
 
 VOLUME ["/etc/openvpn"]
 
-EXPOSE 1194
+EXPOSE 1194/tcp
 
 WORKDIR /etc/openvpn
 

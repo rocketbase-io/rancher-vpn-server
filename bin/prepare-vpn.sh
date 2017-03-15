@@ -7,7 +7,7 @@ set -e
 # Create OpenVPN server config
 cat > $VPN_PATH/server.conf <<EOF
 port 1194
-proto udp
+proto tcp
 dev tun
 keepalive 10 120
 comp-lzo
