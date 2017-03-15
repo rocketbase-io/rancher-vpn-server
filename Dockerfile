@@ -1,15 +1,15 @@
-FROM ubuntu:14.04
+FROM ubuntu:latest
 
 MAINTAINER Manel Martinez <manel@nixelsolutions.com>
 MAINTAINER Niels Schelbach <niels.schelbach@rocketbase.io>
 
 RUN apt-get update && \
-    apt-get install -y openvpn iptables dnsmasq supervisor
+    apt-get install -y openvpn iptables dnsmasq supervisor && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /var/log/supervisor
 
 ENV VPN_PATH /etc/openvpn
-ENV VPN_PASSWORD **ChangeMe**
 ENV ROUTED_NETWORK_CIDR 10.42.0.0
 ENV ROUTED_NETWORK_MASK 255.255.0.0
 ENV DEBUG 0
