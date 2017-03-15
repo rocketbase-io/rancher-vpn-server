@@ -4,15 +4,10 @@
 
 set -e
 
-
-# Update openvpn route
-#RANCHER_NETWORK_CIDR=`ip addr show dev eth0 | grep inet | grep 10.42 | awk '{print $2}' | xargs -i ipcalc -n {} | grep Network | awk '{print $2}' | awk -F/ '{print $1}'`
-#RANCHER_NETWORK_MASK=`ip addr show dev eth0 | grep inet | grep 10.42 | awk '{print $2}' | xargs -i ipcalc -n {} | grep Netmask | awk '{print $2}'`
-
 # Create OpenVPN server config
 cat > $VPN_PATH/server.conf <<EOF
 port 1194
-proto tcp
+proto udp
 dev tun
 keepalive 10 120
 comp-lzo
@@ -20,23 +15,23 @@ comp-lzo
 user nobody
 group nogroup
 
-log-append /var/log/openvpn.log
-verb 3
+verb 1
 
 persist-key
 persist-tun
 
-ca easy-rsa/keys/ca.crt
-cert easy-rsa/keys/server.crt
-key easy-rsa/keys/server.key
-dh easy-rsa/keys/dh2048.pem
-tls-auth easy-rsa/keys/ta.key 0
+ca ca.crt
+cert server.crt
+key server.key
+dh dh2048.pem
+tls-auth ta.key 0
 
 server 10.8.0.0 255.255.255.0
-duplicate-cn
 
 push "route ${ROUTED_NETWORK_CIDR} ${ROUTED_NETWORK_MASK}"
 push "dhcp-option DNS 10.8.0.1" 
+push "dhcp-option DNS 8.8.8.8"
+push "dhcp-option DOMAIN rancher.internal"
 EOF
 
 # Enable tcp forwarding and add iptables MASQUERADE rule
